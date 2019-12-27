@@ -1,0 +1,94 @@
+from selenium import webdriver
+from time import sleep
+import time
+import os
+from selenium.webdriver.common.keys import Keys
+import datetime
+
+browser = webdriver.Ie(r'C:\test1\IEDriverServer.exe')
+webguard_address = "10.0.113.29"
+webguard_port = "12088"
+
+# browser.implicitly_wait(3)
+ 
+browser.get("http://" + webguard_address + ":" + webguard_port) ##Login Page
+window_login = browser.window_handles[0]
+print(browser.title)
+ 
+input_id = browser.find_element_by_css_selector("#loginUserId") ##ID/PW 입력
+input_pw = browser.find_element_by_css_selector("#loginPassword")
+
+input_id.send_keys("admin")
+input_pw.send_keys("qwerty0-")
+
+browser.find_element_by_css_selector("#login_back > img").click()
+
+time.sleep(5)
+window_watch = browser.window_handles[1] ##Webguard Watch
+
+time.sleep(5)
+browser.switch_to.window(window_watch)
+print(browser.title)
+# print(browser.window_handles)
+
+time.sleep(10) ##Live 화면 스크린샷
+screenshot_name = "screenshots/watch.png"
+browser.save_screenshot(screenshot_name)
+time.sleep(3)
+
+suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
+os.rename("screenshots/watch.png", "screenshots/" + webguard_address + "_watch_" + suffix + ".png") ##스크린샷 저장
+# os.rename("screenshots/watch.png", "screenshots/" + webguard_address + "_watch.png") ##스크린샷 저장
+time.sleep(3)
+print("Watch Screenshot(" + suffix + ") is done.")
+
+browser.switch_to.window(window_watch)
+
+watch_clock = browser.find_element_by_id("watch_clock") ##현재 시간 (Watch)
+print (watch_clock.text)
+
+user = browser.find_element_by_id("watch_user_id") ##User
+print (user.text)
+
+ipaddress = browser.find_element_by_id("watch_ipaddress") ##IP 주소
+print (ipaddress.text)
+
+version = browser.find_element_by_id("version") ##Webguard 버전 정보
+print (version.get_attribute("title"))
+
+# browser.switch_to.window(window_watch)
+# time.sleep(5)
+
+browser.find_element_by_css_selector("#function_search").click()
+# browser.find_element_by_id("function_search").click() ##Webguard Search
+time.sleep(5)
+# window_search = browser.window_handles[2]
+# browser.switch_to.window(window_search)
+print(browser.title)
+# print(browser.window_handles)
+
+browser.find_element_by_id("search_btn_play").click() ##재생
+time.sleep(10)
+
+screenshot_name = "screenshots/search.png" ##Play 화면 스크린샷
+browser.save_screenshot(screenshot_name)
+time.sleep(3)
+
+suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
+os.rename("screenshots/search.png", "screenshots/" + webguard_address + "_search_" + suffix + ".png") ##스크린샷 저장
+time.sleep(3)
+print("Search Screenshot(" + suffix + ") is done.")
+
+browser.find_element_by_id("search_btn_stop").click() ##정지
+
+search_clock = browser.find_element_by_id("search_clock") ##현재 시간 (Search)
+print (search_clock.text)
+
+time.sleep(5)
+browser.find_element_by_id("function_savemovie").click() ##clip-Copy 
+
+# sleep(5)
+# browser.quit()
+
+
+
