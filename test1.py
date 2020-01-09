@@ -4,6 +4,8 @@ import time
 import os
 from selenium.webdriver.common.keys import Keys
 import datetime
+# from pywinauto import application
+# from pywinauto import timings
 
 browser = webdriver.Ie(r'C:\selenium-webguard\IEDriverServer.exe')
 webguard_address = "10.0.113.29"
@@ -11,6 +13,7 @@ webguard_port = "12088"
 
 browser.get("http://" + webguard_address + ":" + webguard_port) ##Login Page
 # window_login = browser.window_handles[0]
+login_title = browser.title
 print(browser.title)
 print(browser.current_window_handle)
 print(browser.window_handles)
@@ -31,6 +34,11 @@ browser.switch_to.window(browser.window_handles[1])
 
 # browser.get_window_position(browser.window_handles[1])
 watch_title = browser.title
+print(browser.title)
+
+if watch_title == login_title:
+    browser.switch_to.window(browser.window_handles[1])
+
 print(browser.title)
 print(browser.current_window_handle)
 print(browser.window_handles)
@@ -68,7 +76,7 @@ time.sleep(5)
 saerch_title = browser.title
 print(browser.title)
 
-if watch_title == saerch_title:
+if saerch_title == watch_title:
     browser.find_element_by_id("function_search").click() 
 # browser.find_element_by_id("function_search").click()
 time.sleep(5)
@@ -99,8 +107,15 @@ print (search_clock.text)
 time.sleep(5)
 browser.find_element_by_id("function_savemovie").click() ##clip-Copy 
 
+from autoit import *
+
+win_wait_active("[CLASS : #32770; TITLE : 저장 형식]", 200)
+time.sleep(10)
+control_click("[CLASS : #32770; TITLE : 저장 형식]", "Button1")
+
 # sleep(5)
 # browser.quit()
+
 
 
 
