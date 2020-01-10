@@ -107,11 +107,15 @@ print (search_clock.text)
 time.sleep(5)
 browser.find_element_by_id("function_savemovie").click() ##clip-Copy 
 
-from autoit import *
+import autoit
 
-win_wait_active("[CLASS : #32770; TITLE : 저장 형식]", 200)
+autoit.win_wait_active("저장 형식", 10)
+autoit.control_click("저장 형식", "Button1")
+
 time.sleep(10)
-control_click("[CLASS : #32770; TITLE : 저장 형식]", "Button1")
+autoit.win_wait_active("동영상(전용뷰어) 저장", 10)
+autoit.control_click("동영상(전용뷰어) 저장", "msctls_updown322")
+
 
 # sleep(5)
 # browser.quit()
